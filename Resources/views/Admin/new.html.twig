@@ -1,0 +1,5 @@
+{% extends 'OxygenSecurityBundle::layout.html.twig' %}
+{% form_theme form "OxygenSecurityBundle:Theme:form.html.twig" %}
+{% block body %}
+  {% include 'OxygenSecurityBundle:Admin:form.html.twig' with {'form':form, 'form_route':path('new_user'), 'new_user':true } %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% block field_row %}
+  <div {% if form_errors(form)|length > 0 %}class="user-form-error"{% endif %}>
+    {{ form_label(form) }}     
+    {{ form_widget(form) }}
+  </div>
+{% endblock %}
+
+{% extends 'form_div_layout.html.twig' %}
+{% block generic_label %}
+{% spaceless %}
+  {% if required %}
+    {% set attr = attr|merge({'class': attr.class|default('') ~ ' required'}) %}
+  {% endif %}
+  <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>{{ label|trans }}{% if required %}<span class="required">*</span>{% endif %}</label>
+{% endspaceless %}
+{% endblock %}
