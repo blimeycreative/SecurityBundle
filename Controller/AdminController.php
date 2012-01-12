@@ -9,7 +9,6 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Oxygen\SecurityBundle\Form\UserType;
 use Oxygen\SecurityBundle\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Oxygen\SecurityBundle\Form\Extension\PasswordExtension;
 
 /**
  * @Route("/admin/user")
@@ -22,7 +21,7 @@ class AdminController extends Controller {
    */
   public function newAction() {
     $user = new User();
-    $form = $this->createForm(new UserType(true), $user);
+    $form = $this->createForm(new UserType('admin','new'), $user);
     if ($this->processForm($form, $user, true))
       return new RedirectResponse($this->generateUrl('show_users'));
     return array('form' => $form->createView());
@@ -36,7 +35,7 @@ class AdminController extends Controller {
     $user = $this->getDoctrine()->getRepository('OxygenSecurityBundle:User')->find($id);
     if (!$user)
       throw $this->createNotFoundException('Sorry user not found');
-    $form = $this->createForm(new UserType(), $user);
+    $form = $this->createForm(new UserType('admin','edit'), $user);
     if ($this->processForm($form, $user))
       return new RedirectResponse($this->generateUrl('show_users'));
     return array(
@@ -72,7 +71,7 @@ class AdminController extends Controller {
     $user_query = $this->getDoctrine()->getRepository('OxygenSecurityBundle:User')->createQueryBuilder('u');
     $pager = $this->container
             ->get('oxygen_pagination.factory')
-            ->paginate($user_query, 2)
+            ->paginate($user_query, 2,'u')
             ->getPagination();
     $users = $pager->result->getResult();
     foreach ($users as $user) {

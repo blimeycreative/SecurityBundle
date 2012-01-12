@@ -10,12 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Oxygen\SecurityBundle\Entity\User
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Oxygen\SecurityBundle\Entity\UserRepository")
+ * @UniqueEntity(fields="email", message="The email you entered already has an account")
  */
 class User implements AdvancedUserInterface {
 
@@ -37,14 +39,14 @@ class User implements AdvancedUserInterface {
 
   /**
    * @var string $salt
-   *
+   * 
    * @ORM\Column(name="salt", type="string", length=40)
    */
   private $salt;
 
   /**
    * @var string $password
-   * @Assert\NotBlank()
+   * @Assert\NotNull(message="You must enter a password")
    * @ORM\Column(name="password", type="string", length=255)
    */
   private $password;
@@ -57,8 +59,9 @@ class User implements AdvancedUserInterface {
 
   /**
    * @var string $email
-   * @Assert\NotBlank()
-   * @ORM\Column(name="email", type="string", length=255)
+   * @Assert\Email(message="You must provide a valid email address")
+   * @Assert\NotNull(message="You must provide a valid email address")
+   * @ORM\Column(name="email", type="string", length=255, unique=true)
    */
   private $email;
 
