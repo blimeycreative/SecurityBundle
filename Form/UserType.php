@@ -20,18 +20,15 @@ class UserType extends AbstractType {
     switch ($this->app) {
       case 'admin':
         if ($this->type == 'new')
-          $builder->add ('password', 'password');
+          $builder->add('password', 'password');
         $builder->add('email', 'email')
-                ->add('active')
+                ->add('active', 'checkbox', array('required' => false))
                 ->add('role_objects', 'entity', array(
                     'class' => 'OxygenSecurityBundle:Role',
                     'expanded' => true,
                     'multiple' => true
                 ));
-
-        ;
         break;
-
       case 'front':
         if ($this->type == 'new') {
           $builder->add('password', 'repeated', array(

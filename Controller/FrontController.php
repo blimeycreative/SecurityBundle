@@ -33,9 +33,26 @@ class FrontController extends Controller {
         $em = $this->getDoctrine()->getEntityManager();
         $em->persist($user);
         $em->flush();
+        $message = \Swift_Message::newInstance()
+                ->setSubject('Account confirmation')
+                ->setTo($user->getEmail())
+                        ->setFrom('test@test.com')
+                ->setBody($this->renderView('OxygenSecurityBundle:Email:register.html.twig', array('user'=>$user)),'text/html');
+        $this->get('mailer')->send($message);
+        $this->get('session')->setFlash('notice', 'Thank you, you must now confirm your account');
+
+        return new RedirectResponse($this->generateUrl('register_thankyou'));
       }
     }
     return array('form'=>$form->createView());
+  }
+  
+  /**
+   * @Route("/register/thank-you", name="register_thankyou")
+   * @Template
+   */
+  public function thankyouAction(){
+    return array();
   }
 
 }
