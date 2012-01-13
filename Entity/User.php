@@ -77,7 +77,7 @@ class User implements AdvancedUserInterface {
     $this->roles = new ArrayCollection();
   }
   
-  private function random(){
+  public function random(){
     return base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
   }
 

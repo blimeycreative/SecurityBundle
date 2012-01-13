@@ -69,8 +69,7 @@ class AdminController extends Controller {
    */
   public function indexAction() {
     $user_query = $this->getDoctrine()->getRepository('OxygenSecurityBundle:User')->createQueryBuilder('u');
-    $pager = $this->container
-            ->get('oxygen_pagination.factory')
+    $pager = $this->get('oxygen_pagination.factory')
             ->paginate($user_query, 2,'u')
             ->getPagination();
     $users = $pager->result->getResult();
