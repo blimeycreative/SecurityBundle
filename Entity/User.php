@@ -72,8 +72,13 @@ class User implements AdvancedUserInterface {
   private $delete_form;
 
   public function __construct() {
-    $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+    $this->salt = $this->random();
+    $this->token = $this->random();
     $this->roles = new ArrayCollection();
+  }
+  
+  private function random(){
+    return base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
   }
 
   /**

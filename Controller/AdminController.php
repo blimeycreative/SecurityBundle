@@ -79,7 +79,6 @@ class AdminController extends Controller {
     }
     return array(
         'users' => $users,
-        'data' => $pager->data,
         'pagination' => $pager->template
     );
   }

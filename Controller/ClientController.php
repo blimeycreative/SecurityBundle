@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * @Route("/account")
  */
-class FrontController extends Controller {
+class ClientController extends Controller {
 
   /**
    * @Route("/register", name="register")
