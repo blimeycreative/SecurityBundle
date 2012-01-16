@@ -14,7 +14,7 @@ class SecurityController extends Controller {
    * @Route("/login/{blank_layout}", name="_login", defaults={"blank_layout" = false})
    * @Template()
    */
-  public function loginAction() {
+  public function loginAction($blank_layout) {
     $request = $this->getRequest();
     $session = $request->getSession();
 
