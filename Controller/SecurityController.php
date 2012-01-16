@@ -24,14 +24,14 @@ class SecurityController extends Controller {
     } else {
       $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
     }
-    
+
 
     $form = $this->createForm(new loginType());
-    $form->setData(array('_username'=>$session->get(SecurityContext::LAST_USERNAME)));
-    $params = array('form' => $form->createView(),'error' => $error);
+    $form->setData(array('_username' => $session->get(SecurityContext::LAST_USERNAME)));
+    $params = array('form' => $form->createView(), 'error' => $error);
     if ($blank_layout)
-      return $this->render('OxygenSecurityBundle:Security:login-form.html.twig', $params);
-    return $this->render('OxygenSecurityBundle:Security:login.html.twig', $params);
+      return $this->render('OxygenSecurityBundle:Security:login.html.twig', $params);
+    return $this->render('OxygenSecurityBundle:Security:login-form.html.twig', $params);
   }
 
   /**
