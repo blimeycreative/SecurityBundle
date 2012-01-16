@@ -11,7 +11,7 @@ use Oxygen\SecurityBundle\Form\LoginType;
 class SecurityController extends Controller {
 
   /**
-   * @Route("/login", name="_login")
+   * @Route("/login/{blank_layout}", name="_login", defaults={"blank_layout" = false})
    * @Template()
    */
   public function loginAction() {
@@ -28,10 +28,10 @@ class SecurityController extends Controller {
 
     $form = $this->createForm(new loginType());
     $form->setData(array('_username'=>$session->get(SecurityContext::LAST_USERNAME)));
-    return array(
-        'form' => $form->createView(),
-        'error' => $error,
-    );
+    $params = array('form' => $form->createView(),'error' => $error);
+    if ($blank_layout)
+      return $this->render('OxygenSecurityBundle:Security:login-form.html.twig', $params);
+    return $this->render('OxygenSecurityBundle:Security:login.html.twig', $params);
   }
 
   /**

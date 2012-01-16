@@ -1,3 +1,6 @@
+{% extends 'OxygenSecurityBundle::layout.html.twig' %}
+{% form_theme form "OxygenSecurityBundle:Theme:login.html.twig" %}
+{% block body %}
 {% if error %}
     <div>{{ error.message }}</div>
 {% endif %}
@@ -6,3 +9,4 @@
   {{ form_widget(form) }}
   <input type="submit" value="login" name="login" />
 </form>
+{% endblock %}
