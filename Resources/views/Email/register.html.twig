@@ -6,7 +6,15 @@
     <table>
       <tr>
         <td>
-          Thanks for signing up
+          Thanks for signing up, please click the below link to confirm your
+          registration
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a href="{{ url("register_confirm",{"id":user.id,"token":user.token}) }}">
+            Confirm account registration
+          </a>
         </td>
       </tr>
     </table>

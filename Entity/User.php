@@ -18,6 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Oxygen\SecurityBundle\Entity\UserRepository")
  * @UniqueEntity(fields="email", message="The email you entered already has an account")
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements AdvancedUserInterface {
 
@@ -58,6 +59,12 @@ class User implements AdvancedUserInterface {
   private $active;
 
   /**
+   * @var string $token
+   * @ORM\Column(name="token", type="string", length="255")
+   */
+  private $token;
+
+  /**
    * @var string $email
    * @Assert\Email(message="You must provide a valid email address")
    * @Assert\NotNull(message="You must provide a valid email address")
@@ -71,13 +78,23 @@ class User implements AdvancedUserInterface {
   private $roles;
   private $delete_form;
 
+  /**
+   * @ORM\Column(name="created", type="datetime");
+   */
+  private $created;
+
+  /**
+   * @ORM\Column(name="updated", type="datetime");
+   */
+  private $updated;
+
   public function __construct() {
     $this->salt = $this->random();
     $this->token = $this->random();
     $this->roles = new ArrayCollection();
   }
-  
-  public function random(){
+
+  public function random() {
     return base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
   }
 
@@ -215,10 +232,10 @@ class User implements AdvancedUserInterface {
   /**
    * Add roles
    *
-   * @param Oxygen\SecurityBundle\Entity\Role $roles
+   * @param Oxygen\SecurityBundle\Entity\Role $role
    */
-  public function addRole(Role $roles) {
-    $this->roles[] = $roles;
+  public function addRole(Role $role) {
+    $this->roles[] = $role;
   }
 
   public function setDeleteForm($form) {
@@ -231,6 +248,77 @@ class User implements AdvancedUserInterface {
 
   public function createFormBuilder($data = null, array $options = array()) {
     return $this->container->get('form.factory')->createBuilder('form', $data, $options);
+  }
+
+  /**
+   * Set token
+   *
+   * @param string $token
+   */
+  public function setToken($token) {
+    $this->token = $token;
+  }
+
+  /**
+   * 
+   * Get token
+   *
+   * @return string 
+   */
+  public function getToken() {
+    return $this->token;
+  }
+
+  /**
+   * @ORM\preUpdate
+   */
+  public function updateUser() {
+    $this->setToken($this->random());
+    $this->setUpdated(new \DateTime());
+  }
+
+  /**
+   * @ORM\prePersist
+   */
+  public function setTimestamps() {
+    $this->setCreated(new \DateTime());
+    $this->setUpdated(new \DateTime());
+  }
+
+  /**
+   * Set created
+   *
+   * @param datetime $created
+   */
+  public function setCreated($created) {
+    $this->created = $created;
+  }
+
+  /**
+   * Get created
+   *
+   * @return datetime 
+   */
+  public function getCreated() {
+    return $this->created;
+  }
+
+  /**
+   * Set updated
+   *
+   * @param datetime $updated
+   */
+  public function setUpdated($updated) {
+    $this->updated = $updated;
+  }
+
+  /**
+   * Get updated
+   *
+   * @return datetime 
+   */
+  public function getUpdated() {
+    return $this->updated;
   }
 
 }

@@ -69,16 +69,18 @@ class AdminController extends Controller {
    */
   public function indexAction() {
     $user_query = $this->getDoctrine()->getRepository('OxygenSecurityBundle:User')->createQueryBuilder('u');
-    $pager = $this->get('oxygen_pagination.factory')
+    $pager = $this->get('oxygen.utility.pagination.factory')
             ->paginate($user_query, 2,'u')
             ->getPagination();
     $users = $pager->result->getResult();
     foreach ($users as $user) {
       $user->setDeleteForm($this->createDeleteForm($user->getId())->createView());
     }
+ 
     return array(
         'users' => $users,
-        'pagination' => $pager->template
+        'pagination' => $pager->template,
+        'media_form' => $this->get('oxygen.utility.media.factory')->getUploader()
     );
   }
 
