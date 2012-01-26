@@ -21,7 +21,7 @@ class AdminController extends Controller {
    */
   public function newAction() {
     $user = new User();
-    $form = $this->createForm(new UserType('admin','new'), $user);
+    $form = $this->createForm(new UserType('admin', 'new'), $user);
     if ($this->processForm($form, $user, true))
       return new RedirectResponse($this->generateUrl('show_users'));
     return array('form' => $form->createView());
@@ -35,7 +35,7 @@ class AdminController extends Controller {
     $user = $this->getDoctrine()->getRepository('OxygenSecurityBundle:User')->find($id);
     if (!$user)
       throw $this->createNotFoundException('Sorry user not found');
-    $form = $this->createForm(new UserType('admin','edit'), $user);
+    $form = $this->createForm(new UserType('admin', 'edit'), $user);
     if ($this->processForm($form, $user))
       return new RedirectResponse($this->generateUrl('show_users'));
     return array(
@@ -70,17 +70,16 @@ class AdminController extends Controller {
   public function indexAction() {
     $user_query = $this->getDoctrine()->getRepository('OxygenSecurityBundle:User')->createQueryBuilder('u');
     $pager = $this->get('oxygen.utility.pagination.factory')
-            ->paginate($user_query, 2,'u')
+            ->paginate($user_query, 2, 'u')
             ->getPagination();
     $users = $pager->result->getResult();
     foreach ($users as $user) {
       $user->setDeleteForm($this->createDeleteForm($user->getId())->createView());
     }
- 
+
     return array(
         'users' => $users,
-        'pagination' => $pager->template,
-        'media_form' => $this->get('oxygen.utility.media.factory')->getUploader()
+        'pagination' => $pager->template
     );
   }
 
