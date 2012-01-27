@@ -5,9 +5,10 @@ namespace Oxygen\SecurityBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Oxygen\SecurityBundle\Entity\Role;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class RoleFixtures extends AbstractFixture implements OrderedFixtureInterface{
-  public function load($manager){
+  public function load(ObjectManager $manager){
     $role1 = new Role();
     $role1->setName('administrator');
     $role1->setRole('ROLE_ADMIN');

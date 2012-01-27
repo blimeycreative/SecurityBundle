@@ -6,9 +6,10 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Oxygen\SecurityBundle\Entity\User;
 use Oxygen\SecurityBundle\Entity\Role;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class UserFixtures extends AbstractFixture implements OrderedFixtureInterface{
-  public function load($manager){
+  public function load(ObjectManager $manager){
     $user1 = new User();
     $user1->setUsername('administrator');
     $user1->setSalt($user1->random());
