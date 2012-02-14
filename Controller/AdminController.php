@@ -68,18 +68,19 @@ class AdminController extends Controller {
    * @Template
    */
   public function indexAction() {
-    $user_query = $this->getDoctrine()->getRepository('OxygenSecurityBundle:User')->createQueryBuilder('u');
-    $pager = $this->get('oxygen.utility.pagination.factory')
-            ->paginate($user_query, 2, 'u')
-            ->getPagination();
-    $users = $pager->result->getResult();
-    foreach ($users as $user) {
+    $query = $this->getDoctrine()->getRepository('OxygenSecurityBundle:User')->createQueryBuilder('u');
+    if ($this->container->has('oxygen_paginate'))
+      $query = $this->container->get('oxygen_paginate')
+              ->paginate($query, 2, 'u')
+              ->getResults('users');
+    else
+      $query = $query->getQuery();
+    $users = $query->getResult();
+    foreach ($users as $user)
       $user->setDeleteForm($this->createDeleteForm($user->getId())->createView());
-    }
 
     return array(
         'users' => $users,
-        'pagination' => $pager->template
     );
   }
 

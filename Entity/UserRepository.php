@@ -17,6 +17,7 @@ use Doctrine\ORM\NoResultException;
  */
 class UserRepository extends EntityRepository implements UserProviderInterface {
 
+
   public function loadUserByUsername($username) {
     $user = $this->createQueryBuilder('u')
             ->select('u, r')
@@ -43,12 +44,12 @@ class UserRepository extends EntityRepository implements UserProviderInterface {
     return $this->getEntityName() === $class || is_subclass_of($class, $this->getEntityName());
   }
 
-  public function getAllUsers() {
-    return $this->createQueryBuilder('u')
-                    ->select('u, r')
-                    ->leftJoin('u.roles', 'r')
-                    ->getQuery()
-                    ->getResult();
+  public function getAllUsers($container,$paginate = true) {
+    $query = $this->createQueryBuilder('u')
+            ->select('u, r')
+            ->leftJoin('u.roles', 'r'); 
+    
+    return $query->getQuery()->getResult();
   }
 
 }
